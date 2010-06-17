@@ -11,7 +11,7 @@ sub run {
         return;
     }
 
-    $state->vc->tag_version($ver, "Tagging version '$ver' using shipit.");
+    $state->vc->tag_version($ver, "Tagging version '$ver' using shipit.", $state->revision);
 }
 
 1;

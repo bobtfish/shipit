@@ -52,6 +52,31 @@ sub version {
     return $self->{version} or die "No version yet set";
 }
 
+=head2 set_revision
+
+    $state->set_revision('27363');
+    $state->set_revision('23cbf9');
+
+Set the revision number of the revision contol system. (is done
+by <ShipIt::Step::Commit>) so that if there is a time disparity
+between committing and tagging (for example if you build a .deb
+package in between) the tag can be made on the right revision,
+avoiding a disparity.
+
+=cut
+
+sub set_revision { $_[0]->{revision} = $_[1] }
+
+=head2 revision
+
+    $rev = $state->revision
+
+Returns the revision number that we last committed, or HEAD
+
+=cut
+
+sub revision { $_[0]->{revision} || 'HEAD' }
+
 =head2 pt
 
     $pt = $state->pt;

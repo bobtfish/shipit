@@ -131,8 +131,11 @@ sub commit {
     # commit
     my $tmp_fh = File::Temp->new(UNLINK => 1, SUFFIX => '.msg');
     print $tmp_fh $msg;
-    my $tmp_fn = "$tmp_fh";
-    system($command, "ci", "--file", $tmp_fn) and die "Commit failed.\n";
+    system($command, "ci", "--file", $tmp_fh->filename) and die "Commit failed.\n";
+    my $info = `$command info`;
+    my ($revision) = $info =~ /Revision:\s+(\d+)/;
+    $revision ||= 'HEAD';
+    return $revision;
 }
 
 sub local_diff {
@@ -142,13 +145,13 @@ sub local_diff {
 }
 
 sub tag_version {
-    my ($self, $ver, $msg) = @_;
+    my ($self, $ver, $msg, $revision) = @_;
     $msg ||= "Tagging version $ver.\n";
     my $tmp_fh = File::Temp->new(UNLINK => 1, SUFFIX => '.msg');
     print $tmp_fh $msg;
     my $tmp_fn = "$tmp_fh";
     my $tag_url = $self->_tag_url_of_version($ver);
-    system($self->command, "copy", "--file", $tmp_fn, $self->{url}, $tag_url)
+    system($self->command, "copy", '-r', $revision, "--file", $tmp_fn, $self->{url}, $tag_url)
         and die "Tagging of version '$ver' failed.\n";
 }
 
