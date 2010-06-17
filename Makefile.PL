@@ -21,6 +21,15 @@ WriteMakefile(
                   'File::Spec'     => 0,
                   'Term::ReadLine' => 0,
               },
+              META_MERGE => {
+                  resources => {
+                    homepage    =>      'http://search.cpan.org/dist/ShipIt/',
+                    bugtracker  =>      'http://github.com/bradfitz/shipit/issues',
+                    repository  =>      'http://github.com/bradfitz/shipit',
+                    #MailingList =>      '',
+
+                  },
+              },
               );
 
 
